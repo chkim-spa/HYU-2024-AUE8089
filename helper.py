@@ -7,7 +7,9 @@ import skimage.feature
 PATCHWIDTH = 9
 
 def featMatch(desc1, desc2, metric='hamming', ratio=0.8):
-	matches = skimage.feature.match_descriptors(desc1,desc2,metric=metric,cross_check=True,max_ratio=ratio)
+	matches = skimage.feature.match_descriptors(
+		desc1,desc2,metric=metric,cross_check=True,max_ratio=ratio
+		)
 	return matches
 
 
@@ -48,8 +50,25 @@ def computeBrief(img, locs):
 
 	halfWidth = patchWidth//2
 
-	locs = np.array(list(filter(lambda x: halfWidth <= x[0] < m-halfWidth and halfWidth <= x[1] < n-halfWidth, locs)))
-	desc = np.array([list(map(lambda x: computePixel(img, x[0], x[1], patchWidth, c), zip(compareX, compareY))) for c in locs])
+	locs = np.array(
+		list(
+			filter(
+				lambda x: halfWidth <= x[0] < m - halfWidth and 
+						halfWidth <= x[1] < n - halfWidth,
+				locs
+			)
+		)
+	)
+
+	desc = np.array([
+		list(
+			map(
+				lambda x: computePixel(img, x[0], x[1], patchWidth, c),
+				zip(compareX, compareY)
+			)
+		)
+		for c in locs
+	])
 
 	return desc, locs
 
